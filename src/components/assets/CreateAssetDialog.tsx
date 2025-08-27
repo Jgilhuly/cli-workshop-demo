@@ -9,7 +9,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ASSET_TYPES, ASSET_STATUSES } from '@/lib/constants'
+import { getAssetTypes, getAssetStatuses } from '@/lib/constants'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { createAsset } from '@/lib/actions/assets'
 
 const assetSchema = z.object({
@@ -28,13 +29,15 @@ interface CreateAssetDialogProps {
 }
 
 export function CreateAssetDialog({ open, onOpenChange }: CreateAssetDialogProps) {
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
   const [isSubmitting, setIsSubmitting] = useState(false)
   
   const form = useForm<AssetFormData>({
     resolver: zodResolver(assetSchema),
     defaultValues: {
       status: 'AVAILABLE',
-      type: 'Computer',
+      type: 'COMPUTER',
     },
   })
 
@@ -94,9 +97,9 @@ export function CreateAssetDialog({ open, onOpenChange }: CreateAssetDialogProps
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {ASSET_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
+                        {getAssetTypes(strings).map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -119,7 +122,7 @@ export function CreateAssetDialog({ open, onOpenChange }: CreateAssetDialogProps
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {ASSET_STATUSES.map((status) => (
+                        {getAssetStatuses(strings).map((status) => (
                           <SelectItem key={status.value} value={status.value}>
                             {status.label}
                           </SelectItem>

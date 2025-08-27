@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext'
 import { ReactNode } from 'react'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 
 interface ProtectedRouteProps {
   children: ReactNode
@@ -11,11 +12,15 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children, requiredRole, fallback }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth()
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
+  const authStrings = strings.auth
+  const commonStrings = strings.common
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg">{commonStrings.loading}</div>
       </div>
     )
   }
@@ -23,7 +28,7 @@ export function ProtectedRoute({ children, requiredRole, fallback }: ProtectedRo
   if (!user) {
     return fallback || (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Please log in to continue</div>
+        <div className="text-lg">{authStrings.loginRequired}</div>
       </div>
     )
   }
@@ -31,7 +36,7 @@ export function ProtectedRoute({ children, requiredRole, fallback }: ProtectedRo
   if (requiredRole && user.role !== requiredRole) {
     return fallback || (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Access denied. Insufficient permissions.</div>
+        <div className="text-lg">{authStrings.accessDenied}</div>
       </div>
     )
   }

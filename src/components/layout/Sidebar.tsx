@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuth } from '@/contexts/AuthContext'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -13,20 +14,34 @@ import {
   SettingsIcon 
 } from 'lucide-react'
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  { name: 'Tickets', href: '/tickets', icon: TicketIcon },
-  { name: 'Assets', href: '/assets', icon: ComputerIcon },
-  { name: 'Users', href: '/users', icon: UsersIcon, adminOnly: true },
-  { name: 'Settings', href: '/settings', icon: SettingsIcon, adminOnly: true },
-]
+
+interface NavigationStrings {
+  dashboard: string;
+  tickets: string;
+  assets: string;
+  users: string;
+  settings: string;
+}
+
+function getNavigationItems(navigationStrings: NavigationStrings, getLocalizedPath: (path: string) => string) {
+  return [
+    { name: navigationStrings.dashboard, href: getLocalizedPath('/dashboard'), icon: HomeIcon },
+    { name: navigationStrings.tickets, href: getLocalizedPath('/tickets'), icon: TicketIcon },
+    { name: navigationStrings.assets, href: getLocalizedPath('/assets'), icon: ComputerIcon },
+    { name: navigationStrings.users, href: getLocalizedPath('/users'), icon: UsersIcon, adminOnly: true },
+    { name: navigationStrings.settings, href: getLocalizedPath('/settings'), icon: SettingsIcon, adminOnly: true },
+  ]
+}
 
 export function Sidebar() {
   const { user } = useAuth()
+  const { getLocalizedPath, getStrings } = useLocalizedStrings()
   const pathname = usePathname()
 
   if (!user) return null
 
+  const strings = getStrings()
+  const navigation = getNavigationItems(strings.navigation, getLocalizedPath)
   const filteredNavigation = navigation.filter(item => 
     !item.adminOnly || user.role === 'ADMIN'
   )

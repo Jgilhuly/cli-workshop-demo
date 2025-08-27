@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { PRIORITIES, TICKET_STATUSES } from '@/lib/constants'
+import { getPriorities, getTicketStatuses } from '@/lib/constants'
 import { getTickets, updateTicketStatus, assignTicket } from '@/lib/actions/tickets'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -24,6 +25,8 @@ interface Ticket {
 
 export function TicketList() {
   const { user } = useAuth()
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -65,12 +68,12 @@ export function TicketList() {
   }
 
   const getPriorityColor = (priority: string) => {
-    const priorityData = PRIORITIES.find(p => p.value === priority)
+    const priorityData = getPriorities(strings).find(p => p.value === priority)
     return priorityData?.color || 'bg-gray-100 text-gray-800'
   }
 
   const getStatusColor = (status: string) => {
-    const statusData = TICKET_STATUSES.find(s => s.value === status)
+    const statusData = getTicketStatuses(strings).find(s => s.value === status)
     return statusData?.color || 'bg-gray-100 text-gray-800'
   }
 
@@ -113,10 +116,10 @@ export function TicketList() {
               </div>
               <div className="flex gap-2">
                 <Badge className={getPriorityColor(ticket.priority)}>
-                  {PRIORITIES.find(p => p.value === ticket.priority)?.label || ticket.priority}
+                  {getPriorities(strings).find(p => p.value === ticket.priority)?.label || ticket.priority}
                 </Badge>
                 <Badge className={getStatusColor(ticket.status)}>
-                  {TICKET_STATUSES.find(s => s.value === ticket.status)?.label || ticket.status}
+                  {getTicketStatuses(strings).find(s => s.value === ticket.status)?.label || ticket.status}
                 </Badge>
               </div>
             </div>
@@ -146,7 +149,7 @@ export function TicketList() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {TICKET_STATUSES.map((status) => (
+                      {getTicketStatuses(strings).map((status) => (
                         <SelectItem key={status.value} value={status.value}>
                           {status.label}
                         </SelectItem>

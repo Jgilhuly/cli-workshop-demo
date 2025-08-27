@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getUsers, updateUserRole } from '@/lib/actions/users'
 import { formatDistanceToNow } from 'date-fns'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 
 interface User {
   id: string
@@ -20,6 +21,10 @@ interface User {
 }
 
 export function UserList() {
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
+  const usersStrings = strings.users
+  const commonStrings = strings.common
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -55,7 +60,7 @@ export function UserList() {
     return (
       <Card>
         <CardContent className="p-6">
-          <div className="text-center text-gray-500">Loading users...</div>
+          <div className="text-center text-gray-500">{usersStrings.loadingUsers}</div>
         </CardContent>
       </Card>
     )
@@ -66,7 +71,7 @@ export function UserList() {
       <Card>
         <CardContent className="p-6">
           <div className="text-center text-gray-500">
-            No users found. Add your first user to get started.
+            {usersStrings.noUsersFoundMessage}
           </div>
         </CardContent>
       </Card>
@@ -86,23 +91,23 @@ export function UserList() {
                 </CardDescription>
               </div>
               <Badge className={getRoleColor(user.role)}>
-                {user.role === 'ADMIN' ? 'Admin' : 'End User'}
+                {user.role === 'ADMIN' ? commonStrings.admin : commonStrings.endUser}
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
               <div>
-                <span className="font-medium">Created:</span> {formatDistanceToNow(new Date(user.createdAt), { addSuffix: true })}
+                <span className="font-medium">{usersStrings.createdPrefix}</span> {formatDistanceToNow(new Date(user.createdAt), { addSuffix: true })}
               </div>
               <div>
-                <span className="font-medium">Tickets:</span> {user._count.tickets}
+                <span className="font-medium">{usersStrings.ticketsPrefix}</span> {user._count.tickets}
               </div>
               <div>
-                <span className="font-medium">Assets:</span> {user._count.assets}
+                <span className="font-medium">{usersStrings.assetsPrefix}</span> {user._count.assets}
               </div>
               <div>
-                <label className="text-sm font-medium">Role</label>
+                <label className="text-sm font-medium">{usersStrings.roleLabel}</label>
                 <Select 
                   value={user.role} 
                   onValueChange={(value) => handleRoleChange(user.id, value)}
@@ -111,8 +116,8 @@ export function UserList() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="END_USER">End User</SelectItem>
-                    <SelectItem value="ADMIN">Admin</SelectItem>
+                    <SelectItem value="END_USER">{commonStrings.endUser}</SelectItem>
+                    <SelectItem value="ADMIN">{commonStrings.admin}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
