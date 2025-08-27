@@ -175,3 +175,57 @@ export async function getTicketById(ticketId: string) {
     }
   })
 }
+
+export async function searchTickets(searchTerm: string) {
+  if (!searchTerm || searchTerm.trim().length === 0) {
+    return await getTickets('', 'ADMIN')
+  }
+
+  const searchQuery = searchTerm.trim()
+  
+  return await prisma.ticket.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: searchQuery,
+            mode: 'insensitive'
+          }
+        },
+        {
+          description: {
+            contains: searchQuery,
+            mode: 'insensitive'
+          }
+        },
+        {
+          user: {
+            OR: [
+              {
+                name: {
+                  contains: searchQuery,
+                  mode: 'insensitive'
+                }
+              },
+              {
+                email: {
+                  contains: searchQuery,
+                  mode: 'insensitive'
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    include: {
+      user: {
+        select: { id: true, name: true, email: true }
+      },
+      assignedUser: {
+        select: { id: true, name: true, email: true }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  })
+}
