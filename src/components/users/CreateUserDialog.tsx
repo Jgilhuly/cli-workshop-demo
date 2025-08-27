@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -11,8 +11,9 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createUser } from '@/lib/actions/users'
 import { useLocalizedStrings } from '@/contexts/LocaleContext'
+import type { LocaleStrings } from '@/lib/locale-strings'
 
-function createUserSchema(usersStrings: any, commonStrings: any) {
+function createUserSchema(usersStrings: LocaleStrings['users'], commonStrings: LocaleStrings['common']) {
   return z.object({
     name: z.string().min(1, usersStrings.fullNameRequired),
     email: z.string().email(commonStrings.invalidEmail),
@@ -34,15 +35,21 @@ interface CreateUserDialogProps {
 }
 
 export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) {
-  const { getStrings } = useLocalizedStrings()
+  const { getStrings, currentLocale } = useLocalizedStrings()
   const strings = getStrings()
   const usersStrings = strings.users
   const commonStrings = strings.common
   const [isSubmitting, setIsSubmitting] = useState(false)
   
-  const userSchema = createUserSchema(usersStrings, commonStrings)
+  // Create schema with current locale strings
+  const userSchema = useMemo(
+    () => createUserSchema(usersStrings, commonStrings),
+    [usersStrings, commonStrings]
+  )
+  
+  // Re-initialize form when locale changes
   const form = useForm<UserFormData>({
-    resolver: zodResolver(createUserSchema(usersStrings, commonStrings)),
+    resolver: zodResolver(userSchema),
     defaultValues: {
       role: 'END_USER',
     },
@@ -63,7 +70,7 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]" key={currentLocale}>
         <DialogHeader>
           <DialogTitle>{usersStrings.createNewUser}</DialogTitle>
           <DialogDescription>

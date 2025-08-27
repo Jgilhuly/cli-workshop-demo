@@ -229,6 +229,7 @@ export const englishStrings = {
     selectRole: 'Select a role',
     passwordLabel: 'Password',
     passwordPlaceholder: 'Enter password',
+    passwordMinLength: 'Password must be at least 6 characters',
     creatingUser: 'Creating...',
     createUser: 'Create User'
   },
@@ -479,6 +480,7 @@ export const spanishStrings = {
     selectRole: 'Selecciona un rol',
     passwordLabel: 'Contraseña',
     passwordPlaceholder: 'Ingresa la contraseña',
+    passwordMinLength: 'La contraseña debe tener al menos 6 caracteres',
     creatingUser: 'Creando...',
     createUser: 'Crear Usuario'
   },
