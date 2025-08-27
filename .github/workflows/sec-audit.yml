@@ -51,5 +51,5 @@ jobs:
           - Use \`gh\` to list PRs and to post comments. Avoid duplicate comments.
 
           # Deliverables when updates occur:
-          - A single natural-language PR comment with findings and proposed fixes.
+          - A single natural-language PR comment with findings and proposed fixes. Limit to the top 3 findings.
           " --force --model "$MODEL" --output-format=text
