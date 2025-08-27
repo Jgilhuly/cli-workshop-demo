@@ -36,54 +36,54 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH_PREFIX: translate
         run: |
-          cursor-agent -p "
-            ## Task
-            Automatically maintain translation completeness in the simplified IT Service Desk internationalization system.
+          cursor-agent -p << 'EOF'
+          ## Task
+          Automatically maintain translation completeness in the simplified IT Service Desk internationalization system.
 
-            ## Current Architecture
-            - **Single Locale File**: `src/lib/locale-strings.ts` - All translations in one TypeScript file
-            - **Language Objects**: `englishStrings` (authoritative) and `spanishStrings` 
-            - **Categories**: common, auth, dashboard, tickets, assets, users, navigation, notifications
-            - **Context**: `src/contexts/LocaleContext.tsx` provides `getStrings()` method
-            - **Storage**: localStorage-based language persistence (no URL routing)
+          ## Current Architecture
+          - **Single Locale File**: `src/lib/locale-strings.ts` - All translations in one TypeScript file
+          - **Language Objects**: `englishStrings` (authoritative) and `spanishStrings` 
+          - **Categories**: common, auth, dashboard, tickets, assets, users, navigation, notifications
+          - **Context**: `src/contexts/LocaleContext.tsx` provides `getStrings()` method
+          - **Storage**: localStorage-based language persistence (no URL routing)
 
-            ## Required Actions
+          ## Required Actions
 
-            ### 1. **Analyze Translation Completeness**
-            - Read `src/lib/locale-strings.ts`
-            - Compare structure of `englishStrings` vs `spanishStrings` objects
-            - Identify missing keys in `spanishStrings` by comparing against `englishStrings`
-            - Check for structural mismatches (nested objects, missing categories)
+          ### 1. **Analyze Translation Completeness**
+          - Read `src/lib/locale-strings.ts`
+          - Compare structure of `englishStrings` vs `spanishStrings` objects
+          - Identify missing keys in `spanishStrings` by comparing against `englishStrings`
+          - Check for structural mismatches (nested objects, missing categories)
 
-            ### 2. **Add Missing Spanish Translations**
-            For each missing key in `spanishStrings`:
-            - Translate the English value to Spanish
-            - Maintain exact object structure and key names
-            - Preserve interpolation placeholders like `{name}`, `{count}` etc.
-            - Use appropriate technical terminology for IT/software context
-            - Add to the correct category in `spanishStrings` object
+          ### 2. **Add Missing Spanish Translations**
+          For each missing key in `spanishStrings`:
+          - Translate the English value to Spanish
+          - Maintain exact object structure and key names
+          - Preserve interpolation placeholders like `{name}`, `{count}` etc.
+          - Use appropriate technical terminology for IT/software context
+          - Add to the correct category in `spanishStrings` object
 
-            ### 3. **Ensure Structural Consistency**
-            - Verify `spanishStrings` has identical structure to `englishStrings`
-            - All categories must exist: common, navigation, auth, dashboard, tickets, assets, users, notifications
-            - All nested objects and keys must match exactly
-            - Maintain TypeScript compatibility
+          ### 3. **Ensure Structural Consistency**
+          - Verify `spanishStrings` has identical structure to `englishStrings`
+          - All categories must exist: common, navigation, auth, dashboard, tickets, assets, users, notifications
+          - All nested objects and keys must match exactly
+          - Maintain TypeScript compatibility
 
-            ### 4. **Validation**
-            - Ensure valid TypeScript syntax in `src/lib/locale-strings.ts`
-            - Verify `getStringsForLocale('es')` returns complete Spanish translations
-            - Test that no keys return undefined
-            - Run `npm run build` to confirm build compatibility
+          ### 4. **Validation**
+          - Ensure valid TypeScript syntax in `src/lib/locale-strings.ts`
+          - Verify `getStringsForLocale('es')` returns complete Spanish translations
+          - Test that no keys return undefined
+          - Run `npm run build` to confirm build compatibility
 
-            ## Output Requirements
-            - Log a single comment on the PR with missing translations found per category and count of translations added
-            - Create commit message: \"feat(i18n): add missing Spanish translations - [count] keys added\"
-            - Commit changes to the current branch
+          ## Output Requirements
+          - Log a single comment on the PR with missing translations found per category and count of translations added
+          - Create commit message: "feat(i18n): add missing Spanish translations - [count] keys added"
+          - Commit changes to the current branch
 
-            ## Critical Rules
-            - **Never modify `englishStrings`** - it is the authoritative source
-            - **Only add to `spanishStrings`** object
-            - **Maintain identical structure** - same categories, same key names, same nesting
-            - **Preserve placeholders** - keep `{name}`, `{count}` etc. in translations
-
-          " --force --model "$MODEL" --output-format=text
+          ## Critical Rules
+          - **Never modify `englishStrings`** - it is the authoritative source
+          - **Only add to `spanishStrings`** object
+          - **Maintain identical structure** - same categories, same key names, same nesting
+          - **Preserve placeholders** - keep `{name}`, `{count}` etc. in translations
+          EOF
+          --force --model "$MODEL" --output-format=text
