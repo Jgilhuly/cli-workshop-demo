@@ -2,7 +2,7 @@ name: Auto Security Audit
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
   workflow_dispatch: # Allow manual triggering
 
 permissions:
