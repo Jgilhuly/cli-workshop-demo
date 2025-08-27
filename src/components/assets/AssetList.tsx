@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ASSET_STATUSES } from '@/lib/constants'
+import { getAssetStatuses } from '@/lib/constants'
 import { getAssets, updateAssetStatus, assignAsset } from '@/lib/actions/assets'
 import { formatDistanceToNow } from 'date-fns'
 import { TableSkeleton } from '@/components/ui/loading-skeletons'
@@ -72,7 +72,7 @@ export function AssetList() {
   }
 
   const getStatusColor = (status: string) => {
-    const statusData = ASSET_STATUSES.find(s => s.value === status)
+    const statusData = getAssetStatuses().find(s => s.value === status)
     return statusData?.color || 'bg-gray-100 text-gray-800'
   }
 
@@ -106,7 +106,7 @@ export function AssetList() {
                 </CardDescription>
               </div>
               <Badge className={getStatusColor(asset.status)}>
-                {ASSET_STATUSES.find(s => s.value === asset.status)?.label || asset.status}
+                {getAssetStatuses().find(s => s.value === asset.status)?.label || asset.status}
               </Badge>
             </div>
           </CardHeader>
@@ -137,7 +137,7 @@ export function AssetList() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {ASSET_STATUSES.map((status) => (
+                      {getAssetStatuses().map((status) => (
                         <SelectItem key={status.value} value={status.value}>
                           {status.label}
                         </SelectItem>

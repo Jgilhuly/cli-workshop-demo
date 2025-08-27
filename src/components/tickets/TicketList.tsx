@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { PRIORITIES, TICKET_STATUSES } from '@/lib/constants'
+import { getPriorities, getTicketStatuses } from '@/lib/constants'
 import { getTickets, updateTicketStatus, assignTicket } from '@/lib/actions/tickets'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -65,12 +65,12 @@ export function TicketList() {
   }
 
   const getPriorityColor = (priority: string) => {
-    const priorityData = PRIORITIES.find(p => p.value === priority)
+    const priorityData = getPriorities().find(p => p.value === priority)
     return priorityData?.color || 'bg-gray-100 text-gray-800'
   }
 
   const getStatusColor = (status: string) => {
-    const statusData = TICKET_STATUSES.find(s => s.value === status)
+    const statusData = getTicketStatuses().find(s => s.value === status)
     return statusData?.color || 'bg-gray-100 text-gray-800'
   }
 
@@ -113,10 +113,10 @@ export function TicketList() {
               </div>
               <div className="flex gap-2">
                 <Badge className={getPriorityColor(ticket.priority)}>
-                  {PRIORITIES.find(p => p.value === ticket.priority)?.label || ticket.priority}
+                  {getPriorities().find(p => p.value === ticket.priority)?.label || ticket.priority}
                 </Badge>
                 <Badge className={getStatusColor(ticket.status)}>
-                  {TICKET_STATUSES.find(s => s.value === ticket.status)?.label || ticket.status}
+                  {getTicketStatuses().find(s => s.value === ticket.status)?.label || ticket.status}
                 </Badge>
               </div>
             </div>
@@ -146,7 +146,7 @@ export function TicketList() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {TICKET_STATUSES.map((status) => (
+                      {getTicketStatuses().map((status) => (
                         <SelectItem key={status.value} value={status.value}>
                           {status.label}
                         </SelectItem>

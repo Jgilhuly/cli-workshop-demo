@@ -8,9 +8,11 @@ import { TicketIcon, ComputerIcon, UsersIcon } from 'lucide-react'
 import { CreateTicketDialog } from '@/components/tickets/CreateTicketDialog'
 import { CreateAssetDialog } from '@/components/assets/CreateAssetDialog'
 import { CreateUserDialog } from '@/components/users/CreateUserDialog'
-
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 export function QuickActions() {
   const { user } = useAuth()
+  const { getStrings } = useLocalizedStrings()
+  const dashboardStrings = getStrings().dashboard
   const [ticketDialogOpen, setTicketDialogOpen] = useState(false)
   const [assetDialogOpen, setAssetDialogOpen] = useState(false)
   const [userDialogOpen, setUserDialogOpen] = useState(false)
@@ -19,7 +21,7 @@ export function QuickActions() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+          <CardTitle>{dashboardStrings.quickActions}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -28,7 +30,7 @@ export function QuickActions() {
               className="h-auto p-4 flex flex-col items-center space-y-2"
             >
               <TicketIcon className="h-6 w-6" />
-              <span>Create Ticket</span>
+              <span>{dashboardStrings.createTicket}</span>
             </Button>
             
             <Button 
@@ -36,7 +38,7 @@ export function QuickActions() {
               className="h-auto p-4 flex flex-col items-center space-y-2"
             >
               <ComputerIcon className="h-6 w-6" />
-              <span>Add Asset</span>
+              <span>{dashboardStrings.addAsset}</span>
             </Button>
             
             {user?.role === 'ADMIN' && (
@@ -45,7 +47,7 @@ export function QuickActions() {
                 className="h-auto p-4 flex flex-col items-center space-y-2"
               >
                 <UsersIcon className="h-6 w-6" />
-                <span>Add User</span>
+                <span>{dashboardStrings.addUser}</span>
               </Button>
             )}
           </div>

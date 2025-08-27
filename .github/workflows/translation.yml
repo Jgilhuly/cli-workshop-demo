@@ -36,20 +36,51 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH_PREFIX: translate
         run: |
-          cursor-agent -p "You are operating in a GitHub Actions runner.
+          cursor-agent -p "
+            ## Task
+            Automatically maintain translation completeness across all supported languages in the IT Service Desk multi-language system.
 
-          The GitHub CLI is available as \`gh\` and authenticated via \`$GH_TOKEN\`. Git is available. You have write access to repository contents and can comment on pull requests, but you must not create or edit PRs directly.
+            ## Current Architecture
+            - **Locale Files**: `src/locales/[locale]/[category].json` (8 categories: common, auth, dashboard, tickets, assets, users, navigation, notifications)
+            - **Supported Languages**: Extract from `src/locales/discovery.ts` → `AVAILABLE_LOCALES` array
+            - **Reference Locale**: English (`en`) - always complete and authoritative
+            - **Dynamic System**: Locale loaders in `src/locales/discovery.ts`, middleware config in `middleware.ts`
 
-          # Context:
-          - Repo: ${{ github.repository }}
-          - Translation Branch Prefix: $BRANCH_PREFIX
+            ## Required Actions
 
-          # Goal:
-          - Translate the core pages of the repository to Spanish.
+            ### 1. **Detect Supported Languages**
+            ```bash
+            grep "AVAILABLE_LOCALES.*=" src/locales/discovery.ts | grep -o "\['[^']*'" | tr -d "[]'"
+            ```
 
-          # Inputs and conventions:
-          - Use \`gh\` to list PRs and to post comments. Avoid duplicate comments.
+            ### 2. **Compare & Identify Missing Translations**
+            For each supported language (except `en`):
+            - Compare JSON keys in `src/locales/[locale]/[category].json` vs `src/locales/en/[category].json`
+            - Report missing keys per category per language
+            - Check for structural mismatches (nested objects, arrays)
 
-          # Deliverables when updates occur:
-          - A single natural-language PR comment with findings and proposed fixes.
+            ### 3. **Add Missing Translations**
+            For each missing key:
+            - Use translate it from the english file to the target language file
+            - Maintain JSON structure exactly (nested objects, interpolation placeholders like `{name}`)
+            - Preserve technical terms appropriately
+            - Add to respective locale files
+
+            ### 4. **Update Configuration Files**
+            Ensure consistency:
+            - `middleware.ts` → `SUPPORTED_LOCALES` array matches discovery.ts
+            - All supported locales have complete loader entries in `src/locales/discovery.ts`
+
+            ### 5. **Validation**
+            - Verify JSON syntax validity
+            - Confirm all English keys exist in all supported locales
+            - Test build compatibility: `npm run build`
+
+            ## Output Requirements
+            - Log a single comment on the PR with the missing translations found per language/category and translations added
+            - Create commit message: "feat(i18n): update translations for [languages] - [count] keys added"
+            - Commit the changes to the current branch
+
+            ## Critical: Never modify English (`en`) locale files - they are the authoritative source.
+
           " --force --model "$MODEL" --output-format=text

@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { PRIORITIES, TICKET_CATEGORIES } from '@/lib/constants'
+import { getPriorities, getTicketCategories } from '@/lib/constants'
 import { useAuth } from '@/contexts/AuthContext'
 import { createTicket } from '@/lib/actions/tickets'
 import { notifications, NOTIFICATION_MESSAGES } from '@/lib/notifications'
@@ -129,7 +129,7 @@ export function CreateTicketDialog({ open, onOpenChange }: CreateTicketDialogPro
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {PRIORITIES.map((priority) => (
+                        {getPriorities().map((priority) => (
                           <SelectItem key={priority.value} value={priority.value}>
                             {priority.label}
                           </SelectItem>
@@ -154,9 +154,9 @@ export function CreateTicketDialog({ open, onOpenChange }: CreateTicketDialogPro
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {TICKET_CATEGORIES.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
+                        {getTicketCategories().map((category) => (
+                          <SelectItem key={category.value} value={category.value}>
+                            {category.label}
                           </SelectItem>
                         ))}
                       </SelectContent>

@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+---
+
+# String Internationalization Requirements
+
+## CRITICAL: All User-Facing Strings Must Use Locale System
+
+ALL user-facing strings MUST be managed through the locale system - NO hardcoded plaintext strings allowed.
+
+### ❌ NEVER DO THIS:
+```typescript
+<button>Create Ticket</button>
+<div>Loading...</div>
+const message = "User created successfully"
+```
+
+### ✅ ALWAYS DO THIS:
+```typescript
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
+import { getTicketsStrings } from '@/locales'
+
+const ticketsStrings = getTicketsStrings()
+<button>{ticketsStrings.createTitle}</button>
+<div>{commonStrings.loading}</div>
+```
+
+### System Architecture:
+- **Locale Files**: [src/locales/en/](mdc:src/locales/en/) and [src/locales/es/](mdc:src/locales/es/) (8 categories)
+- **Context Hook**: [src/contexts/LocaleContext.tsx](mdc:src/contexts/LocaleContext.tsx)
+- **String Functions**: [src/locales/index.ts](mdc:src/locales/index.ts)
+
+### Categories: 
+`common.json`, `auth.json`, `dashboard.json`, `tickets.json`, `assets.json`, `users.json`, `navigation.json`, `notifications.json`
+
+### For New Strings:
+1. Add to `src/locales/en/[category].json`
+2. Add to all supported locales (`es`, etc.)
+3. Use via `useLocalizedStrings()` or getter functions
+
+### String Interpolation:
+```typescript
+{getInterpolatedString('auth', 'welcomeMessage', { name: user.name })}
+// Maps to: "Welcome, {name}" in locale files
+```
+
+**Always check existing locale files before adding new strings. Hardcoded strings break internationalization.**

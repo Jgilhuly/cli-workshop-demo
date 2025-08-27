@@ -1,4 +1,5 @@
 import { toast } from "sonner"
+import { englishStrings } from '@/lib/locale-strings'
 
 export const notifications = {
   success: (message: string, description?: string) => {
@@ -21,26 +22,26 @@ export const notifications = {
   },
 }
 
-// Common notification messages
+// Notification message functions
 export const NOTIFICATION_MESSAGES = {
-  TICKET_CREATED: 'Ticket created successfully',
-  TICKET_UPDATED: 'Ticket updated successfully', 
+  TICKET_CREATED: englishStrings.notifications.ticketCreated,
+  TICKET_UPDATED: englishStrings.notifications.ticketUpdated,
   TICKET_ASSIGNED: 'Ticket assigned successfully',
-  TICKET_ERROR: 'Failed to update ticket',
+  TICKET_ERROR: 'Error managing ticket',
   
-  ASSET_CREATED: 'Asset created successfully',
-  ASSET_UPDATED: 'Asset updated successfully',
-  ASSET_ASSIGNED: 'Asset assigned successfully', 
-  ASSET_ERROR: 'Failed to update asset',
+  ASSET_CREATED: englishStrings.notifications.assetCreated,
+  ASSET_UPDATED: englishStrings.notifications.assetUpdated,
+  ASSET_ASSIGNED: 'Asset assigned successfully',
+  ASSET_ERROR: 'Error managing asset',
   
-  USER_CREATED: 'User created successfully',
-  USER_UPDATED: 'User updated successfully',
-  USER_ERROR: 'Failed to update user',
+  USER_CREATED: englishStrings.notifications.userCreated,
+  USER_UPDATED: englishStrings.notifications.userUpdated,
+  USER_ERROR: 'Error managing user',
   
-  LOGIN_ERROR: 'Invalid email or password',
-  LOGIN_SUCCESS: 'Successfully logged in',
-  LOGOUT_SUCCESS: 'Successfully logged out',
+  LOGIN_ERROR: englishStrings.auth.loginError,
+  LOGIN_SUCCESS: englishStrings.notifications.loginSuccess,
+  LOGOUT_SUCCESS: englishStrings.notifications.logoutSuccess,
   
-  GENERIC_ERROR: 'An error occurred. Please try again.',
+  GENERIC_ERROR: 'An error occurred',
   LOADING: 'Loading...',
 } as const

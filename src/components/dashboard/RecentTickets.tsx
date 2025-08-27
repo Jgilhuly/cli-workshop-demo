@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { getTickets } from '@/lib/actions/tickets'
-import { PRIORITIES, TICKET_STATUSES } from '@/lib/constants'
+import { getPriorities, getTicketStatuses } from '@/lib/constants'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 
@@ -46,12 +46,12 @@ export function RecentTickets() {
   }, [user, loadRecentTickets])
 
   const getPriorityColor = (priority: string) => {
-    const priorityData = PRIORITIES.find(p => p.value === priority)
+    const priorityData = getPriorities().find(p => p.value === priority)
     return priorityData?.color || 'bg-gray-100 text-gray-800'
   }
 
   const getStatusColor = (status: string) => {
-    const statusData = TICKET_STATUSES.find(s => s.value === status)
+    const statusData = getTicketStatuses().find(s => s.value === status)
     return statusData?.color || 'bg-gray-100 text-gray-800'
   }
 
@@ -101,10 +101,10 @@ export function RecentTickets() {
                 <div className="flex items-center space-x-2 mb-1">
                   <h4 className="font-medium text-sm truncate">{ticket.title}</h4>
                   <Badge className={getPriorityColor(ticket.priority)}>
-                    {PRIORITIES.find(p => p.value === ticket.priority)?.label || ticket.priority}
+                    {getPriorities().find(p => p.value === ticket.priority)?.label || ticket.priority}
                   </Badge>
                   <Badge className={getStatusColor(ticket.status)}>
-                    {TICKET_STATUSES.find(s => s.value === ticket.status)?.label || ticket.status}
+                    {getTicketStatuses().find(s => s.value === ticket.status)?.label || ticket.status}
                   </Badge>
                 </div>
                 <div className="text-xs text-gray-500">

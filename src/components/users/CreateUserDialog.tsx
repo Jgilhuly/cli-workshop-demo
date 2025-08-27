@@ -10,15 +10,23 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createUser } from '@/lib/actions/users'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 
-const userSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address'),
-  role: z.enum(['END_USER', 'ADMIN']),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-})
+function createUserSchema(usersStrings: any, commonStrings: any) {
+  return z.object({
+    name: z.string().min(1, usersStrings.fullNameRequired),
+    email: z.string().email(commonStrings.invalidEmail),
+    role: z.enum(['END_USER', 'ADMIN']),
+    password: z.string().min(6, usersStrings.passwordMinLength),
+  })
+}
 
-type UserFormData = z.infer<typeof userSchema>
+type UserFormData = {
+  name: string;
+  email: string;
+  role: 'END_USER' | 'ADMIN';
+  password: string;
+}
 
 interface CreateUserDialogProps {
   open: boolean
@@ -26,10 +34,15 @@ interface CreateUserDialogProps {
 }
 
 export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) {
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
+  const usersStrings = strings.users
+  const commonStrings = strings.common
   const [isSubmitting, setIsSubmitting] = useState(false)
   
+  const userSchema = createUserSchema(usersStrings, commonStrings)
   const form = useForm<UserFormData>({
-    resolver: zodResolver(userSchema),
+    resolver: zodResolver(createUserSchema(usersStrings, commonStrings)),
     defaultValues: {
       role: 'END_USER',
     },
@@ -52,9 +65,9 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Create New User</DialogTitle>
+          <DialogTitle>{usersStrings.createNewUser}</DialogTitle>
           <DialogDescription>
-            Add a new user account to the system.
+            {usersStrings.createUserDescription}
           </DialogDescription>
         </DialogHeader>
         
@@ -64,13 +77,13 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter full name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                              <FormItem>
+                <FormLabel>{usersStrings.fullNameLabel}</FormLabel>
+                <FormControl>
+                  <Input placeholder={usersStrings.fullNamePlaceholder} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
               )}
             />
             
@@ -78,13 +91,13 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="Enter email address" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                              <FormItem>
+                <FormLabel>{usersStrings.emailLabel}</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder={usersStrings.emailPlaceholder} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
               )}
             />
             
@@ -93,21 +106,21 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
                 control={form.control}
                 name="role"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="END_USER">End User</SelectItem>
-                        <SelectItem value="ADMIN">Admin</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                                  <FormItem>
+                  <FormLabel>{usersStrings.roleLabel}</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={usersStrings.selectRole} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="END_USER">{commonStrings.endUser}</SelectItem>
+                      <SelectItem value="ADMIN">{commonStrings.admin}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
                 )}
               />
               
@@ -115,13 +128,13 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Enter password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                                  <FormItem>
+                  <FormLabel>{usersStrings.passwordLabel}</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder={usersStrings.passwordPlaceholder} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
                 )}
               />
             </div>
@@ -133,10 +146,10 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
                 onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
-                Cancel
+                {commonStrings.cancel}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Creating...' : 'Create User'}
+                {isSubmitting ? usersStrings.creatingUser : usersStrings.createUser}
               </Button>
             </DialogFooter>
           </form>
