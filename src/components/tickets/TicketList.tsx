@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { getPriorities, getTicketStatuses } from '@/lib/constants'
 import { getTickets, updateTicketStatus, assignTicket } from '@/lib/actions/tickets'
 import { formatDistanceToNow } from 'date-fns'
+import { TicketSearch } from './TicketSearch'
 
 interface Ticket {
   id: string
@@ -29,6 +30,8 @@ export function TicketList() {
   const strings = getStrings()
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchResults, setSearchResults] = useState<Ticket[]>([])
 
   const loadTickets = useCallback(async () => {
     if (!user) return
@@ -67,6 +70,16 @@ export function TicketList() {
     }
   }
 
+  const handleSearchResults = (results: Ticket[]) => {
+    setSearchResults(results)
+  }
+
+  const handleSearching = (searching: boolean) => {
+    setIsSearching(searching)
+  }
+
+  const displayTickets = isSearching ? searchResults : tickets
+
   const getPriorityColor = (priority: string) => {
     const priorityData = getPriorities(strings).find(p => p.value === priority)
     return priorityData?.color || 'bg-gray-100 text-gray-800'
@@ -87,7 +100,7 @@ export function TicketList() {
     )
   }
 
-  if (tickets.length === 0) {
+  if (tickets.length === 0 && !isSearching) {
     return (
       <Card>
         <CardContent className="p-6">
@@ -99,9 +112,50 @@ export function TicketList() {
     )
   }
 
+  if (isSearching && searchResults.length === 0) {
+    return (
+      <div className="space-y-4">
+        {user?.role === 'ADMIN' && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Search Tickets</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <TicketSearch 
+                onSearchResults={handleSearchResults}
+                onSearching={handleSearching}
+              />
+            </CardContent>
+          </Card>
+        )}
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center text-gray-500">
+              No tickets found matching your search
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
-      {tickets.map((ticket) => (
+      {user?.role === 'ADMIN' && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Search Tickets</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <TicketSearch 
+              onSearchResults={handleSearchResults}
+              onSearching={handleSearching}
+            />
+          </CardContent>
+        </Card>
+      )}
+      
+      {displayTickets.map((ticket) => (
         <Card key={ticket.id}>
           <CardHeader>
             <div className="flex justify-between items-start">
