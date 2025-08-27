@@ -16,7 +16,6 @@ export function LoginForm() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
-  const { currentLocale } = useLocalizedStrings()
   const authStrings = useLocalizedStrings().getStrings().auth
 
   const handleSubmit = async (e: React.FormEvent) => {

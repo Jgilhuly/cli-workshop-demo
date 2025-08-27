@@ -130,7 +130,7 @@ export function useSort<T>(initialField?: keyof T, initialDirection: 'asc' | 'de
 }
 
 // Hook for managing form state with validation
-export function useForm<T extends Record<string, any>>(
+export function useForm<T extends Record<string, unknown>>(
   initialValues: T,
   validate?: (values: T) => Partial<Record<keyof T, string>>
 ) {
@@ -148,7 +148,7 @@ export function useForm<T extends Record<string, any>>(
     }
   }, [errors])
 
-  const setTouched = useCallback((name: keyof T) => {
+  const handleSetTouched = useCallback((name: keyof T) => {
     setTouched(prev => ({ ...prev, [name]: true }))
   }, [])
 
@@ -181,14 +181,14 @@ export function useForm<T extends Record<string, any>>(
         setIsSubmitting(false)
       }
     }
-  }, [values, validateForm])
+  }, [values, validateForm, setTouched])
 
   const reset = useCallback(() => {
     setValues(initialValues)
     setErrors({})
     setTouched({})
     setIsSubmitting(false)
-  }, [initialValues])
+  }, [initialValues, setTouched])
 
   return {
     values,
@@ -196,7 +196,7 @@ export function useForm<T extends Record<string, any>>(
     touched,
     isSubmitting,
     setValue,
-    setTouched,
+    setTouched: handleSetTouched,
     handleSubmit,
     reset,
     isValid: Object.keys(errors).length === 0
@@ -210,7 +210,7 @@ export function useSearch<T>(
   filterFn?: (item: T) => boolean
 ) {
   const [query, setQuery] = useState('')
-  const [filters, setFilters] = useState<Record<string, any>>({})
+  const [filters, setFilters] = useState<Record<string, unknown>>({})
 
   const debouncedQuery = useDebounce(query, 300)
 
@@ -239,7 +239,7 @@ export function useSearch<T>(
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {
         result = result.filter(item => {
-          const itemValue = (item as any)[key]
+          const itemValue = (item as Record<string, unknown>)[key]
           if (Array.isArray(value)) {
             return value.includes(itemValue)
           }
@@ -251,7 +251,7 @@ export function useSearch<T>(
     return result
   }, [items, debouncedQuery, searchFields, filterFn, filters])
 
-  const setFilter = useCallback((key: string, value: any) => {
+  const setFilter = useCallback((key: string, value: unknown) => {
     setFilters(prev => ({ ...prev, [key]: value }))
   }, [])
 

@@ -96,8 +96,8 @@ export const englishStrings = {
     loginRequired: 'Please log in to continue',
     appTitle: 'IT Service Desk',
     demoCredentials: 'Demo Credentials',
-    endUserCredentials: 'End User: user@demo.com / demo123',
-    adminCredentials: 'Admin: admin@demo.com / admin123'
+    endUserCredentials: 'End User: user@company.com / user123',
+    adminCredentials: 'Admin: admin@company.com / admin123'
   },
   dashboard: {
     title: 'Dashboard',
@@ -347,8 +347,8 @@ export const spanishStrings = {
     loginRequired: 'Por favor inicia sesión para continuar',
     appTitle: 'Mesa de Ayuda TI',
     demoCredentials: 'Credenciales de Demo',
-    endUserCredentials: 'Usuario: user@demo.com / demo123',
-    adminCredentials: 'Admin: admin@demo.com / admin123'
+    endUserCredentials: 'Usuario: user@company.com / user123',
+    adminCredentials: 'Admin: admin@company.com / admin123'
   },
   dashboard: {
     title: 'Panel de Control',

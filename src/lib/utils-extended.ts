@@ -255,7 +255,7 @@ export const statusUtils = {
 
 // Data transformation utilities
 export const transformUtils = {
-  toSelectOptions: <T extends Record<string, any>>(
+  toSelectOptions: <T extends Record<string, unknown>>(
     items: T[], 
     valueKey: keyof T, 
     labelKey: keyof T
@@ -266,7 +266,7 @@ export const transformUtils = {
     }))
   },
 
-  toStatusOptions: <T extends Record<string, any>>(
+  toStatusOptions: <T extends Record<string, unknown>>(
     items: T[], 
     valueKey: keyof T, 
     labelKey: keyof T,
@@ -294,7 +294,7 @@ export const storageUtils = {
     }
   },
 
-  set: (key: string, value: any) => {
+  set: (key: string, value: unknown) => {
     if (typeof window === 'undefined') return
     
     try {
@@ -317,7 +317,7 @@ export const storageUtils = {
 
 // Debounce and throttle utilities
 export const performanceUtils = {
-  debounce: <T extends (...args: any[]) => any>(
+  debounce: <T extends (...args: unknown[]) => unknown>(
     func: T, 
     wait: number
   ): (...args: Parameters<T>) => void => {
@@ -328,7 +328,7 @@ export const performanceUtils = {
     }
   },
 
-  throttle: <T extends (...args: any[]) => any>(
+  throttle: <T extends (...args: unknown[]) => unknown>(
     func: T, 
     limit: number
   ): (...args: Parameters<T>) => void => {

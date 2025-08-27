@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
 import { getStringsForLocale, type LocaleStrings } from '@/lib/locale-strings'
 
 interface LocaleContextType {
@@ -94,7 +94,7 @@ export function useLocalizedStrings() {
     // Convenience methods that use current locale context
     isCurrentLocale: (locale: string) => currentLocale === locale,
     isSupported: (locale: string) => supportedLocales.includes(locale),
-    getLocalizedPath: (path: string, targetLocale?: string) => {
+    getLocalizedPath: (path: string) => {
       // Since we're not using URL-based locale routing, just return the path as-is
       return path
     },

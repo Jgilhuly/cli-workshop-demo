@@ -10,9 +10,8 @@ import { LanguageSwitcher } from '@/components/ui/language-switcher'
 
 export function Header() {
   const { user, logout } = useAuth()
-  const { currentLocale, getLocalizedPath, getStrings } = useLocalizedStrings()
+  const { getStrings } = useLocalizedStrings()
   const strings = getStrings()
-  const navigationStrings = strings.navigation
   const authStrings = strings.auth
 
   if (!user) return null
