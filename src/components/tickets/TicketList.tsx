@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { TicketSearchBar } from './TicketSearchBar'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getPriorities, getTicketStatuses } from '@/lib/constants'
@@ -20,7 +21,7 @@ interface Ticket {
   status: string
   createdAt: Date
   user: { id: string; name: string; email: string }
-  assignedUser?: { id: string; name: string; email: string }
+  assignedUser: { id: string; name: string; email: string } | null
 }
 
 export function TicketList() {
@@ -28,7 +29,9 @@ export function TicketList() {
   const { getStrings } = useLocalizedStrings()
   const strings = getStrings()
   const [tickets, setTickets] = useState<Ticket[]>([])
+  const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const loadTickets = useCallback(async () => {
     if (!user) return
@@ -36,6 +39,7 @@ export function TicketList() {
     try {
       const ticketData = await getTickets(user.id, user.role)
       setTickets(ticketData)
+      setFilteredTickets(ticketData)
     } catch (error) {
       console.error('Failed to load tickets:', error)
     } finally {
@@ -43,11 +47,31 @@ export function TicketList() {
     }
   }, [user])
 
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query)
+    if (!query.trim()) {
+      setFilteredTickets(tickets)
+      return
+    }
+
+    const filtered = tickets.filter(ticket => 
+      ticket.title.toLowerCase().includes(query.toLowerCase()) ||
+      ticket.description.toLowerCase().includes(query.toLowerCase()) ||
+      ticket.category.toLowerCase().includes(query.toLowerCase()) ||
+      ticket.user.name.toLowerCase().includes(query.toLowerCase())
+    )
+    setFilteredTickets(filtered)
+  }, [tickets])
+
   useEffect(() => {
     if (user) {
       loadTickets()
     }
   }, [user, loadTickets])
+
+  useEffect(() => {
+    handleSearch(searchQuery)
+  }, [searchQuery, handleSearch])
 
   const handleStatusChange = async (ticketId: string, newStatus: string) => {
     try {
@@ -99,9 +123,26 @@ export function TicketList() {
     )
   }
 
+  if (filteredTickets.length === 0 && searchQuery) {
+    return (
+      <>
+        <TicketSearchBar onSearch={handleSearch} searchQuery={searchQuery} />
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center text-gray-500">
+              No tickets found matching your search criteria.
+            </div>
+          </CardContent>
+        </Card>
+      </>
+    )
+  }
+
   return (
-    <div className="space-y-4">
-      {tickets.map((ticket) => (
+    <>
+      <TicketSearchBar onSearch={handleSearch} searchQuery={searchQuery} />
+      <div className="space-y-4">
+        {filteredTickets.map((ticket) => (
         <Card key={ticket.id}>
           <CardHeader>
             <div className="flex justify-between items-start">
@@ -177,7 +218,8 @@ export function TicketList() {
             )}
           </CardContent>
         </Card>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   )
 }
