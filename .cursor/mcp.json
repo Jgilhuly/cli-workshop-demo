@@ -1,12 +1,4 @@
 {
     "mcpServers": {
-      "Figma": {
-        "url": "http://127.0.0.1:3845/sse",
-        "headers": {}
-      },
-      "Linear": {
-        "url": "https://mcp.linear.app/sse",
-        "headers": {}
-      }
     }
   }
