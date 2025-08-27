@@ -40,7 +40,7 @@ export function CreateTicketDialog({ open, onOpenChange }: CreateTicketDialogPro
     resolver: zodResolver(ticketSchema),
     defaultValues: {
       priority: 'MEDIUM',
-      category: 'Hardware',
+      category: 'HARDWARE',
     },
   })
 
