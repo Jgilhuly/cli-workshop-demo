@@ -38,49 +38,52 @@ jobs:
         run: |
           cursor-agent -p "
             ## Task
-            Automatically maintain translation completeness across all supported languages in the IT Service Desk multi-language system.
+            Automatically maintain translation completeness in the simplified IT Service Desk internationalization system.
 
             ## Current Architecture
-            - **Locale Files**: `src/locales/[locale]/[category].json` (8 categories: common, auth, dashboard, tickets, assets, users, navigation, notifications)
-            - **Supported Languages**: Extract from `src/locales/discovery.ts` → `AVAILABLE_LOCALES` array
-            - **Reference Locale**: English (`en`) - always complete and authoritative
-            - **Dynamic System**: Locale loaders in `src/locales/discovery.ts`, middleware config in `middleware.ts`
+            - **Single Locale File**: `src/lib/locale-strings.ts` - All translations in one TypeScript file
+            - **Language Objects**: `englishStrings` (authoritative) and `spanishStrings` 
+            - **Categories**: common, auth, dashboard, tickets, assets, users, navigation, notifications
+            - **Context**: `src/contexts/LocaleContext.tsx` provides `getStrings()` method
+            - **Storage**: localStorage-based language persistence (no URL routing)
 
             ## Required Actions
 
-            ### 1. **Detect Supported Languages**
-            ```bash
-            grep "AVAILABLE_LOCALES.*=" src/locales/discovery.ts | grep -o "\['[^']*'" | tr -d "[]'"
-            ```
+            ### 1. **Analyze Translation Completeness**
+            - Read `src/lib/locale-strings.ts`
+            - Compare structure of `englishStrings` vs `spanishStrings` objects
+            - Identify missing keys in `spanishStrings` by comparing against `englishStrings`
+            - Check for structural mismatches (nested objects, missing categories)
 
-            ### 2. **Compare & Identify Missing Translations**
-            For each supported language (except `en`):
-            - Compare JSON keys in `src/locales/[locale]/[category].json` vs `src/locales/en/[category].json`
-            - Report missing keys per category per language
-            - Check for structural mismatches (nested objects, arrays)
+            ### 2. **Add Missing Spanish Translations**
+            For each missing key in `spanishStrings`:
+            - Translate the English value to Spanish
+            - Maintain exact object structure and key names
+            - Preserve interpolation placeholders like `{name}`, `{count}` etc.
+            - Use appropriate technical terminology for IT/software context
+            - Add to the correct category in `spanishStrings` object
 
-            ### 3. **Add Missing Translations**
-            For each missing key:
-            - Use translate it from the english file to the target language file
-            - Maintain JSON structure exactly (nested objects, interpolation placeholders like `{name}`)
-            - Preserve technical terms appropriately
-            - Add to respective locale files
+            ### 3. **Ensure Structural Consistency**
+            - Verify `spanishStrings` has identical structure to `englishStrings`
+            - All categories must exist: common, navigation, auth, dashboard, tickets, assets, users, notifications
+            - All nested objects and keys must match exactly
+            - Maintain TypeScript compatibility
 
-            ### 4. **Update Configuration Files**
-            Ensure consistency:
-            - `middleware.ts` → `SUPPORTED_LOCALES` array matches discovery.ts
-            - All supported locales have complete loader entries in `src/locales/discovery.ts`
-
-            ### 5. **Validation**
-            - Verify JSON syntax validity
-            - Confirm all English keys exist in all supported locales
-            - Test build compatibility: `npm run build`
+            ### 4. **Validation**
+            - Ensure valid TypeScript syntax in `src/lib/locale-strings.ts`
+            - Verify `getStringsForLocale('es')` returns complete Spanish translations
+            - Test that no keys return undefined
+            - Run `npm run build` to confirm build compatibility
 
             ## Output Requirements
-            - Log a single comment on the PR with the missing translations found per language/category and translations added
-            - Create commit message: "feat(i18n): update translations for [languages] - [count] keys added"
-            - Commit the changes to the current branch
+            - Log a single comment on the PR with missing translations found per category and count of translations added
+            - Create commit message: \"feat(i18n): add missing Spanish translations - [count] keys added\"
+            - Commit changes to the current branch
 
-            ## Critical: Never modify English (`en`) locale files - they are the authoritative source.
+            ## Critical Rules
+            - **Never modify `englishStrings`** - it is the authoritative source
+            - **Only add to `spanishStrings`** object
+            - **Maintain identical structure** - same categories, same key names, same nesting
+            - **Preserve placeholders** - keep `{name}`, `{count}` etc. in translations
 
           " --force --model "$MODEL" --output-format=text
