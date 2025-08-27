@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getAssetTypes, getAssetStatuses } from '@/lib/constants'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { createAsset } from '@/lib/actions/assets'
 
 const assetSchema = z.object({
@@ -28,6 +29,8 @@ interface CreateAssetDialogProps {
 }
 
 export function CreateAssetDialog({ open, onOpenChange }: CreateAssetDialogProps) {
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
   const [isSubmitting, setIsSubmitting] = useState(false)
   
   const form = useForm<AssetFormData>({
@@ -94,7 +97,7 @@ export function CreateAssetDialog({ open, onOpenChange }: CreateAssetDialogProps
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {getAssetTypes().map((type) => (
+                        {getAssetTypes(strings).map((type) => (
                           <SelectItem key={type.value} value={type.value}>
                             {type.label}
                           </SelectItem>
@@ -119,7 +122,7 @@ export function CreateAssetDialog({ open, onOpenChange }: CreateAssetDialogProps
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {getAssetStatuses().map((status) => (
+                        {getAssetStatuses(strings).map((status) => (
                           <SelectItem key={status.value} value={status.value}>
                             {status.label}
                           </SelectItem>

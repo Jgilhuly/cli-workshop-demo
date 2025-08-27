@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -22,6 +23,8 @@ interface Ticket {
 
 export function RecentTickets() {
   const { user } = useAuth()
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -46,12 +49,12 @@ export function RecentTickets() {
   }, [user, loadRecentTickets])
 
   const getPriorityColor = (priority: string) => {
-    const priorityData = getPriorities().find(p => p.value === priority)
+    const priorityData = getPriorities(strings).find(p => p.value === priority)
     return priorityData?.color || 'bg-gray-100 text-gray-800'
   }
 
   const getStatusColor = (status: string) => {
-    const statusData = getTicketStatuses().find(s => s.value === status)
+    const statusData = getTicketStatuses(strings).find(s => s.value === status)
     return statusData?.color || 'bg-gray-100 text-gray-800'
   }
 
@@ -101,10 +104,10 @@ export function RecentTickets() {
                 <div className="flex items-center space-x-2 mb-1">
                   <h4 className="font-medium text-sm truncate">{ticket.title}</h4>
                   <Badge className={getPriorityColor(ticket.priority)}>
-                    {getPriorities().find(p => p.value === ticket.priority)?.label || ticket.priority}
+                    {getPriorities(strings).find(p => p.value === ticket.priority)?.label || ticket.priority}
                   </Badge>
                   <Badge className={getStatusColor(ticket.status)}>
-                    {getTicketStatuses().find(s => s.value === ticket.status)?.label || ticket.status}
+                    {getTicketStatuses(strings).find(s => s.value === ticket.status)?.label || ticket.status}
                   </Badge>
                 </div>
                 <div className="text-xs text-gray-500">

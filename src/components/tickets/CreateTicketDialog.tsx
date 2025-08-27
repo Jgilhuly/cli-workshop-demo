@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getPriorities, getTicketCategories } from '@/lib/constants'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { createTicket } from '@/lib/actions/tickets'
 import { notifications, NOTIFICATION_MESSAGES } from '@/lib/notifications'
 
@@ -31,6 +32,8 @@ interface CreateTicketDialogProps {
 
 export function CreateTicketDialog({ open, onOpenChange }: CreateTicketDialogProps) {
   const { user } = useAuth()
+  const { getStrings } = useLocalizedStrings()
+  const strings = getStrings()
   const [isSubmitting, setIsSubmitting] = useState(false)
   
   const form = useForm<TicketFormData>({
@@ -129,7 +132,7 @@ export function CreateTicketDialog({ open, onOpenChange }: CreateTicketDialogPro
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {getPriorities().map((priority) => (
+                        {getPriorities(strings).map((priority) => (
                           <SelectItem key={priority.value} value={priority.value}>
                             {priority.label}
                           </SelectItem>
@@ -154,7 +157,7 @@ export function CreateTicketDialog({ open, onOpenChange }: CreateTicketDialogPro
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {getTicketCategories().map((category) => (
+                        {getTicketCategories(strings).map((category) => (
                           <SelectItem key={category.value} value={category.value}>
                             {category.label}
                           </SelectItem>
