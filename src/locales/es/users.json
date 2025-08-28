@@ -1,42 +1,31 @@
 {
   "title": "Usuarios",
-  "createTitle": "Crear nuevo usuario",
-  "editTitle": "Editar usuario",
+  "subtitle": "Gestiona cuentas de usuario y permisos",
   
-  "fullName": "Nombre completo",
+  "createNewUser": "Crear nuevo usuario",
+  "createUserDescription": "Agrega un nuevo usuario al sistema. Completa los detalles a continuación.",
+  "fullNameLabel": "Nombre completo",
   "fullNamePlaceholder": "Ingresa el nombre completo",
-  "email": "Correo electrónico",
-  "emailPlaceholder": "Ingresa el correo electrónico",
-  "role": "Rol",
-  "rolePlaceholder": "Selecciona el rol",
-  "department": "Departamento",
-  "departmentPlaceholder": "Ingresa el departamento",
+  "emailLabel": "Correo electrónico",
+  "emailPlaceholder": "Ingresa la dirección de correo electrónico",
+  "passwordLabel": "Contraseña",
+  "passwordPlaceholder": "Ingresa la contraseña",
+  "roleLabel": "Rol",
+  "selectRole": "Seleccionar rol",
   
-  "userId": "ID de usuario",
-  "createdAt": "Creado el",
-  "lastLogin": "Último inicio de sesión",
-  "accountStatus": "Estado de cuenta",
-  
-  "noUsersFound": "No se encontraron usuarios.",
   "loadingUsers": "Cargando usuarios...",
-  "errorLoadingUsers": "Error al cargar usuarios",
+  "noUsersFound": "No se encontraron usuarios.",
+  "noUsersFoundMessage": "No se encontraron usuarios. Agrega tu primer usuario para comenzar.",
   
-  "userCreated": "Usuario creado exitosamente",
-  "userUpdated": "Usuario actualizado exitosamente",
-  "userDeleted": "Usuario eliminado exitosamente",
-  "roleUpdated": "Rol actualizado exitosamente",
+  "createdPrefix": "Creado:",
+  "ticketsPrefix": "Tickets:",
+  "assetsPrefix": "Activos:",
   
-  "confirmDelete": "¿Estás seguro de que quieres eliminar este usuario?",
-  "deleteUser": "Eliminar usuario",
-  "changeRole": "Cambiar rol",
+  "fullNameRequired": "El nombre completo es requerido",
+  "emailRequired": "El correo electrónico es requerido",
+  "passwordRequired": "La contraseña es requerida",
+  "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
   
-  "fullNameRequired": "El nombre completo es obligatorio",
-  "emailRequired": "El correo electrónico es obligatorio",
-  "roleRequired": "El rol es obligatorio",
-  "validEmailRequired": "Se requiere un correo electrónico válido",
-  
-  "adminRole": "Administrador",
-  "endUserRole": "Usuario final",
-  "roleAdmin": "Administrador",
-  "roleEndUser": "Usuario final"
+  "createUser": "Crear usuario",
+  "creatingUser": "Creando..."
 }

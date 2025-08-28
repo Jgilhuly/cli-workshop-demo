@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { getPriorities, getTicketStatuses } from '@/lib/constants'
 import { getTickets, updateTicketStatus, assignTicket } from '@/lib/actions/tickets'
 import { formatDistanceToNow } from 'date-fns'
+import { TicketSearchBar } from './TicketSearchBar'
 
 interface Ticket {
   id: string
@@ -20,7 +21,7 @@ interface Ticket {
   status: string
   createdAt: Date
   user: { id: string; name: string; email: string }
-  assignedUser?: { id: string; name: string; email: string }
+  assignedUser: { id: string; name: string; email: string } | null
 }
 
 export function TicketList() {
@@ -29,6 +30,7 @@ export function TicketList() {
   const strings = getStrings()
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const loadTickets = useCallback(async () => {
     if (!user) return
@@ -77,6 +79,28 @@ export function TicketList() {
     return statusData?.color || 'bg-gray-100 text-gray-800'
   }
 
+  const filteredTickets = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return tickets
+    }
+
+    const query = searchQuery.toLowerCase()
+    return tickets.filter(ticket => 
+      ticket.title.toLowerCase().includes(query) ||
+      ticket.description.toLowerCase().includes(query) ||
+      ticket.user.name.toLowerCase().includes(query) ||
+      ticket.category.toLowerCase().includes(query)
+    )
+  }, [tickets, searchQuery])
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query)
+  }, [])
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery('')
+  }, [])
+
   if (isLoading) {
     return (
       <Card>
@@ -99,9 +123,41 @@ export function TicketList() {
     )
   }
 
+  if (searchQuery && filteredTickets.length === 0) {
+    return (
+      <div className="space-y-4">
+        {user?.role === 'ADMIN' && (
+          <div className="flex justify-end">
+            <TicketSearchBar 
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
+              searchQuery={searchQuery}
+            />
+          </div>
+        )}
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center text-gray-500">
+              No tickets found matching &quot;{searchQuery}&quot;. Try a different search term.
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
-      {tickets.map((ticket) => (
+      {user?.role === 'ADMIN' && (
+        <div className="flex justify-end">
+          <TicketSearchBar 
+            onSearch={handleSearch}
+            onClear={handleClearSearch}
+            searchQuery={searchQuery}
+          />
+        </div>
+      )}
+      {filteredTickets.map((ticket) => (
         <Card key={ticket.id}>
           <CardHeader>
             <div className="flex justify-between items-start">

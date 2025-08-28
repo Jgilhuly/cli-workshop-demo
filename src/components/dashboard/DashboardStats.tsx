@@ -9,7 +9,7 @@ import { useLocalizedStrings } from '@/contexts/LocaleContext'
 import { StatsSkeleton } from '@/components/ui/loading-skeletons'
 import { notifications } from '@/lib/notifications'
 
-import { Ticket, Asset } from '@/lib/types'
+
 
 interface DashboardStatsData {
   totalTickets: number
@@ -39,8 +39,8 @@ export function DashboardStats() {
         getAssets(),
       ])
 
-      const openTickets = tickets.filter((ticket: Ticket) => ticket.status === 'OPEN').length
-      const assignedAssets = assets.filter((asset: Asset) => asset.status === 'ASSIGNED').length
+      const openTickets = tickets.filter((ticket) => ticket.status === 'OPEN').length
+      const assignedAssets = assets.filter((asset) => asset.status === 'ASSIGNED').length
 
       setStats({
         totalTickets: tickets.length,
