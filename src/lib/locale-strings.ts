@@ -157,7 +157,12 @@ export const englishStrings = {
     descriptionRequired: 'Description is required',
     createSuccess: 'Ticket created successfully',
     updateSuccess: 'Ticket updated successfully',
-    deleteSuccess: 'Ticket deleted successfully'
+    deleteSuccess: 'Ticket deleted successfully',
+    searchPlaceholder: 'Search tickets...',
+    searchByTitle: 'Search by title',
+    searchByDescription: 'Search by description',
+    searchByUser: 'Search by user',
+    clearSearch: 'Clear search'
   },
   assets: {
     title: 'Assets',
@@ -408,7 +413,12 @@ export const spanishStrings = {
     descriptionRequired: 'La descripción es requerida',
     createSuccess: 'Ticket creado exitosamente',
     updateSuccess: 'Ticket actualizado exitosamente',
-    deleteSuccess: 'Ticket eliminado exitosamente'
+    deleteSuccess: 'Ticket eliminado exitosamente',
+    searchPlaceholder: 'Buscar tickets...',
+    searchByTitle: 'Buscar por título',
+    searchByDescription: 'Buscar por descripción',
+    searchByUser: 'Buscar por usuario',
+    clearSearch: 'Limpiar búsqueda'
   },
   assets: {
     title: 'Activos',
