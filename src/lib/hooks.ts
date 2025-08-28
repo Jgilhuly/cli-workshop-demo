@@ -5,7 +5,7 @@ import { performanceUtils, storageUtils } from './utils-extended'
 export function useLocalStorage<T>(key: string, initialValue: T) {
   // Get from local storage then parse stored json or return initialValue
   const [storedValue, setStoredValue] = useState<T>(() => {
-    return storageUtils.get(key, initialValue)
+    return storageUtils.get(key, initialValue) ?? initialValue
   })
 
   // Return a wrapped version of useState's setter function that persists the new value to localStorage.
@@ -285,7 +285,7 @@ export function useToggle(initialValue = false): [boolean, () => void, (value?: 
 
 // Hook for managing previous value
 export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>()
+  const ref = useRef<T | undefined>(undefined)
   
   useEffect(() => {
     ref.current = value
@@ -323,8 +323,8 @@ export function useClipboard(timeout = 2000) {
 // Hook for detecting click outside element
 export function useClickOutside<T extends HTMLElement = HTMLElement>(
   callback: () => void
-): React.RefObject<T> {
-  const ref = useRef<T>(null)
+): React.RefObject<T | null> {
+  const ref = useRef<T | null>(null)
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {

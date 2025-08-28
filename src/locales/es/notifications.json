@@ -1,32 +1,34 @@
 {
   "ticketCreated": "Ticket creado exitosamente",
-  "ticketUpdated": "Ticket actualizado",
-  "ticketDeleted": "Ticket eliminado",
+  "ticketUpdated": "Ticket actualizado exitosamente",
+  "ticketAssigned": "Ticket asignado exitosamente",
+  "ticketError": "Error al actualizar ticket",
+  "creatingTicket": "Creando ticket...",
   
-  "assetCreated": "Activo creado exitosamente", 
-  "assetUpdated": "Activo actualizado",
-  "assetDeleted": "Activo eliminado",
+  "assetCreated": "Activo creado exitosamente",
+  "assetUpdated": "Activo actualizado exitosamente",
+  "assetAssigned": "Activo asignado exitosamente",
+  "assetError": "Error al actualizar activo",
+  "updatingAssetStatus": "Actualizando estado del activo...",
+  "updatingAssetAssignment": "Actualizando asignación del activo...",
   
   "userCreated": "Usuario creado exitosamente",
-  "userUpdated": "Usuario actualizado", 
-  "userDeleted": "Usuario eliminado",
+  "userUpdated": "Usuario actualizado exitosamente",
+  "userError": "Error al actualizar usuario",
   
+  "loginError": "Correo electrónico o contraseña inválidos",
   "loginSuccess": "Inicio de sesión exitoso",
-  "loginError": "Error al iniciar sesión",
   "logoutSuccess": "Sesión cerrada exitosamente",
+  "authRequired": "Autenticación requerida",
+  "authRequiredDescription": "Por favor, inicia sesión para crear un ticket",
   
-  "saveSuccess": "Guardado exitosamente",
-  "saveError": "Error al guardar",
-  "deleteSuccess": "Eliminado exitosamente", 
-  "deleteError": "Error al eliminar",
-  "updateSuccess": "Actualizado exitosamente",
-  "updateError": "Error al actualizar",
+  "genericError": "Ocurrió un error. Por favor, intenta de nuevo.",
+  "loadingGeneric": "Cargando...",
   
-  "networkError": "Error de red",
-  "serverError": "Error del servidor",
-  "unknownError": "Error desconocido",
-  
-  "validationError": "Error de validación",
-  "permissionDenied": "Permiso denegado",
-  "accessDenied": "Acceso denegado"
+  "assetStatusUpdated": "Estado del activo actualizado exitosamente",
+  "assetAssignmentUpdated": "Asignación del activo actualizada exitosamente",
+  "assetStatusUpdateFailed": "Error al actualizar estado del activo",
+  "assetAssignmentUpdateFailed": "Error al actualizar asignación del activo",
+  "assetsLoadError": "Error al cargar activos",
+  "assetsLoadErrorDescription": "Por favor, actualiza la página para intentar de nuevo"
 }

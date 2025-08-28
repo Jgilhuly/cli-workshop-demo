@@ -63,7 +63,7 @@ export interface UserWithCounts extends Omit<User, 'tickets' | 'assignedTickets'
   }
 }
 
-export interface UserProfile extends User {
+export interface UserProfile extends Omit<User, 'tickets' | 'assets'> {
   tickets: Pick<Ticket, 'id' | 'title' | 'status' | 'createdAt'>[]
   assets: Pick<Asset, 'id' | 'name' | 'type' | 'status'>[]
 }

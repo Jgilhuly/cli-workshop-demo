@@ -1,30 +1,36 @@
 {
   "title": "Tickets",
-  "createTitle": "Crear nuevo ticket",
-  "editTitle": "Editar ticket",
+  "subtitle": "Gestiona tickets de soporte y solicitudes",
   
-  "ticketTitle": "Título del ticket",
-  "ticketTitlePlaceholder": "Ingresa el título del ticket",
-  "ticketDescription": "Descripción",
-  "ticketDescriptionPlaceholder": "Describe el problema o solicitud",
-  "priority": "Prioridad",
-  "priorityPlaceholder": "Selecciona la prioridad",
-  "assignedTo": "Asignado a",
-  "assignedToPlaceholder": "Selecciona un usuario",
+  "createNewTicket": "Crear nuevo ticket",
+  "createTicketDescription": "Envía un nuevo ticket de soporte. Completa los detalles a continuación.",
+  "titleLabel": "Título",
+  "titlePlaceholder": "Breve descripción del problema",
+  "descriptionLabel": "Descripción",
+  "descriptionPlaceholder": "Descripción detallada del problema...",
+  "priorityLabel": "Prioridad",
+  "categoryLabel": "Categoría",
+  "selectPriority": "Seleccionar prioridad",
+  "selectCategory": "Seleccionar categoría",
   
-  "ticketNumber": "Ticket #",
-  "submittedBy": "Enviado por",
-  "createdAt": "Creado el",
-  "lastUpdated": "Última actualización",
-  
-  "noTicketsFound": "No se encontraron tickets.",
   "loadingTickets": "Cargando tickets...",
-  "errorLoadingTickets": "Error al cargar tickets",
+  "noTicketsFound": "No se encontraron tickets.",
+  "noTicketsFoundMessage": "No se encontraron tickets. Crea tu primer ticket para comenzar.",
   
-  "ticketCreated": "Ticket creado exitosamente",
-  "ticketUpdated": "Ticket actualizado exitosamente",
-  "ticketDeleted": "Ticket eliminado exitosamente",
+  "categoryPrefix": "Categoría:",
+  "createdPrefix": "Creado:",
+  "byPrefix": "Por:",
+  "statusLabel": "Estado",
+  "assignToLabel": "Asignar a",
+  "unassigned": "Sin asignar",
   
-  "confirmDelete": "¿Estás seguro de que quieres eliminar este ticket?",
-  "deleteTicket": "Eliminar ticket"
+  "titleRequired": "El título es requerido",
+  "descriptionMinLength": "La descripción debe tener al menos 10 caracteres",
+  "categoryRequired": "La categoría es requerida",
+  
+  "categoryHardware": "Hardware",
+  "categorySoftware": "Software",
+  "categoryNetwork": "Red",
+  "categoryAccess": "Acceso",
+  "categoryOther": "Otro"
 }

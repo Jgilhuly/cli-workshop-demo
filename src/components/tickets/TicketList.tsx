@@ -21,7 +21,7 @@ interface Ticket {
   status: string
   createdAt: Date
   user: { id: string; name: string; email: string }
-  assignedUser?: { id: string; name: string; email: string }
+  assignedUser: { id: string; name: string; email: string } | null
 }
 
 export function TicketList() {

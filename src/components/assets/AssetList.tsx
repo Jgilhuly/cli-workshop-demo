@@ -16,11 +16,11 @@ interface Asset {
   id: string
   name: string
   type: string
-  serialNumber?: string
+  serialNumber: string | null
   status: string
-  purchaseDate?: Date
+  purchaseDate: Date | null
   createdAt: Date
-  assignedUser?: { id: string; name: string; email: string }
+  assignedUser?: { id: string; name: string; email: string } | null
 }
 
 export function AssetList() {

@@ -1,24 +1,31 @@
 {
   "title": "Panel de control",
-  "welcomeMessage": "Bienvenido a tu panel de control",
+  "subtitle": "Resumen de las operaciones de tu mesa de servicio de TI",
   
   "totalTickets": "Total de tickets",
   "openTickets": "Tickets abiertos",
   "totalAssets": "Total de activos",
-  "totalUsers": "Total de usuarios",
+  "assignedAssets": "Activos asignados",
   
-  "noTicketsFound": "No se encontraron tickets",
-  "noAssetsFound": "No se encontraron activos",
-  "errorLoadingStats": "Error al cargar estadísticas",
+  "noTicketsYet": "Aún no hay tickets",
+  "ticketsOpen": "{count} abiertos",
+  "noOpenTickets": "No hay tickets abiertos",
+  "requiresAttention": "Requiere atención",
+  "noAssetsYet": "Aún no hay activos",
+  "hardwareAndSoftware": "Hardware y software",
+  "noAssignedAssets": "No hay activos asignados",
+  "currentlyInUse": "Actualmente en uso",
+  
+  "quickActions": "Acciones rápidas",
+  "createTicket": "Crear ticket",
+  "addAsset": "Agregar activo",
+  "addUser": "Agregar usuario",
   
   "recentTickets": "Tickets recientes",
-  "quickActions": "Acciones rápidas",
+  "viewAll": "Ver todo",
+  "loadingRecentTickets": "Cargando tickets recientes...",
+  "noTicketsMessage": "Aún no hay tickets. Crea tu primer ticket para comenzar.",
   
-  "createTicket": "Crear ticket",
-  "createAsset": "Crear activo",
-  "createUser": "Crear usuario",
-  
-  "ticketsOverview": "Resumen de tickets",
-  "assetsOverview": "Resumen de activos",
-  "systemHealth": "Salud del sistema"
+  "statsLoadError": "Error al cargar estadísticas del panel",
+  "statsLoadErrorDescription": "Por favor, actualiza la página para intentar de nuevo"
 }
